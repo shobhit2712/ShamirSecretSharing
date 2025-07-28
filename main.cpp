@@ -18,7 +18,7 @@ struct Point {
     ll y;
 };
 
-// Convert string number in given base to decimal
+
 ll baseToDecimal(const string& s, int base) {
     ll value = 0;
     for (char c : s) {
@@ -28,7 +28,7 @@ ll baseToDecimal(const string& s, int base) {
     return value;
 }
 
-// Lagrange interpolation to calculate f(0)
+
 ll lagrangeInterpolation(const vector<Point>& points) {
     ld result = 0.0;
     int k = points.size();
@@ -44,7 +44,6 @@ ll lagrangeInterpolation(const vector<Point>& points) {
     return ll(round(result));
 }
 
-// Basic parser to extract data from JSON-like input
 map<ll, pair<int, string>> parseJson(const string& filename, int& n, int& k) {
     ifstream file(filename);
     string line;
@@ -71,7 +70,6 @@ map<ll, pair<int, string>> parseJson(const string& filename, int& n, int& k) {
     return data;
 }
 
-// Compute the constant term (secret)
 ll computeSecret(const string& filename) {
     int n, k;
     map<ll, pair<int, string>> input = parseJson(filename, n, k);
