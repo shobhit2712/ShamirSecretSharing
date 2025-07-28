@@ -18,7 +18,7 @@ struct Point {
     ll y;
 };
 
-// Convert a string number in given base to decimal
+// Convert string number in given base to decimal
 ll baseToDecimal(const string& s, int base) {
     ll value = 0;
     for (char c : s) {
@@ -28,7 +28,7 @@ ll baseToDecimal(const string& s, int base) {
     return value;
 }
 
-// Manually implement Lagrange interpolation to get f(0)
+// Lagrange interpolation to calculate f(0)
 ll lagrangeInterpolation(const vector<Point>& points) {
     ld result = 0.0;
     int k = points.size();
@@ -44,7 +44,7 @@ ll lagrangeInterpolation(const vector<Point>& points) {
     return ll(round(result));
 }
 
-// Very basic JSON parser tailored for this input structure
+// Basic parser to extract data from JSON-like input
 map<ll, pair<int, string>> parseJson(const string& filename, int& n, int& k) {
     ifstream file(filename);
     string line;
@@ -65,22 +65,24 @@ map<ll, pair<int, string>> parseJson(const string& filename, int& n, int& k) {
             string val = valueLine.substr(valueLine.find(":") + 2);
             val = val.substr(0, val.find("\"", 1));
 
-            data[x] = {base, val};
+            data[x] = make_pair(base, val);
         }
     }
     return data;
 }
 
+// Compute the constant term (secret)
 ll computeSecret(const string& filename) {
     int n, k;
     map<ll, pair<int, string>> input = parseJson(filename, n, k);
 
     vector<Point> selected;
     int count = 0;
-    for (auto& [x, by] : input) {
+    for (map<ll, pair<int, string>>::iterator it = input.begin(); it != input.end(); ++it) {
         if (count >= k) break;
-        int base = by.first;
-        string value = by.second;
+        ll x = it->first;
+        int base = it->second.first;
+        string value = it->second.second;
         ll y = baseToDecimal(value, base);
         selected.push_back({x, y});
         count++;
@@ -92,9 +94,9 @@ ll computeSecret(const string& filename) {
 int main() {
     string files[2] = {"testcase1.json", "testcase2.json"};
 
-    for (const auto& file : files) {
-        ll secret = computeSecret(file);
-        cout << "Secret (c) from " << file << ": " << secret << endl;
+    for (int i = 0; i < 2; i++) {
+        ll secret = computeSecret(files[i]);
+        cout << "Secret (c) from " << files[i] << ": " << secret << endl;
     }
 
     return 0;
